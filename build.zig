@@ -1,11 +1,17 @@
 const Builder = @import("std").build.Builder;
+const Version = @import("std").builtin.Version;
 
 pub fn build(b: *Builder) void {
+    
+    const version =  Version {
+       .major = 0,
+       .minor = 0,
+       .patch = 1,
+    };
     const mode = b.standardReleaseOptions();
-    const lib = b.addSharedLibrary("zig", "src/main.zig", b.version(0,0,0));
-    lib.addLibPath("/usr/lib/x86_64-linux-gnu/");
+    const lib = b.addSharedLibrary("test", "src/main.zig", b.version(version.major,version.minor,version.patch));
     lib.linkSystemLibrary("c");
-    lib.linkSystemLibrary("tclstub8.6");
+    lib.linkSystemLibraryName("tclstub8.6");
     lib.setBuildMode(mode);
     lib.install();
 
